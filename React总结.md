@@ -172,9 +172,10 @@ function fn(a){
 
    ```jsx
    constructor
-   componentWillMount
+   componentWillMount  // 组件即将挂载
    render
-   componentDidMount
+   componentDidMount   // 组件已经挂载
+   // 在2、3之间页面完成渲染
    ```
 
 2. 更新
@@ -182,7 +183,7 @@ function fn(a){
    ```jsx
    更新有三种方式触发
    1. 父组件 this.setState 导致子组件重新渲染，子组件会触发：
-   	componentWillReceiveProps
+   	componentWillReceiveProps  // 组件将要接收属性
        shouldComponentUpdate
        componentWillUpdate
        render
@@ -385,3 +386,36 @@ this.props.history.push("/xxx")
 3. `match`
 
    `params 参数`
+
+forEach中遍历产生一级路由和二级路由，如果先添加一级路由，就不能正常显示二级路由内容
+
+==原因是==：Switch组件会让多个路由只生效一个，所以一级路由在前面，就会先匹配一级路由
+
+如果一级路由和耳机路由分别是：
+
+```jsx
+<Route path="/home" component={Home} />
+<Route path="/home/xxx" component={Xxx} />
+// 这个路由默认匹配路径是以/home开头的路径都能匹配
+解决办法1：
+	遍历的时候先遍历二级路由再遍历一级路由
+解决办法2：
+	在Route标签中再添加一个属性：exact //严格匹配
+```
+
+```jsx
+<A><B /><C /></A>
+通过this.props.children获取组件标签中所有内容
+React.createElement(type(元素类型/组件),props(元素/组件接收的属性),children)
+```
+
+```jsx
+Link 
+	不能刷新，不能发送请求，不能跳转网址 绑定onClick事件，禁止默认行为
+    只能更新浏览历史记录 -> history.push()
+举例：
+	<Link to="/home">首页</Link>
+	this.props.to -> 对应： /home
+	this.props.children -> 对应： 首页
+```
+
